@@ -6,29 +6,11 @@ import java.net.Socket;
 
 public class ClienteGUI extends javax.swing.JFrame {
 
-    final String HOST = "localhost";
-    final int PUERTO = 5000;
-    Socket sc;
-    DataOutputStream mensaje;
-    DataInputStream entrada;
-
     public ClienteGUI() {
         initComponents();
-    }
-
-    public void initClient() /*ejecuta este metodo para correr el cliente */ {
-        try {
-            sc = new Socket(HOST, PUERTO);
-            /*conectar a un servidor en localhost con puerto 5000*/
-//creamos el flujo de datos por el que se enviara un mensaje
-            mensaje = new DataOutputStream(sc.getOutputStream());
-//enviamos el mensaje
-            mensaje.writeUTF("hola que tal!!");
-//cerramos la conexión
-            sc.close();
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        setLocationRelativeTo(null);
+        setResizable(false);
+        setTitle("Programa Cliente");
     }
 
     @SuppressWarnings("unchecked")
@@ -36,53 +18,51 @@ public class ClienteGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jDesktopPane1 = new javax.swing.JDesktopPane();
-        jButton1 = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(485, 403));
+        setPreferredSize(new java.awt.Dimension(485, 403));
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jDesktopPane1.setLayer(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setMinimumSize(new java.awt.Dimension(485, 403));
+        jDesktopPane1.setPreferredSize(new java.awt.Dimension(485, 403));
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addGap(152, 152, 152)
-                .addComponent(jButton1)
-                .addContainerGap(171, Short.MAX_VALUE))
+            .addGap(0, 485, Short.MAX_VALUE)
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addGap(132, 132, 132)
-                .addComponent(jButton1)
-                .addContainerGap(136, Short.MAX_VALUE))
+            .addGap(0, 403, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1)
-        );
+        getContentPane().add(jDesktopPane1, java.awt.BorderLayout.CENTER);
+
+        jMenu1.setText("Salir");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Iniciar conexion");
+        jMenu2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu2MouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        initClient();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
+        CRUD crud = new CRUD();
+        crud.setVisible(true);
+        jDesktopPane1.add(crud);
+    }//GEN-LAST:event_jMenu2MouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -117,7 +97,9 @@ public class ClienteGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
 }
