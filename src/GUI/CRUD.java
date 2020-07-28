@@ -4,26 +4,29 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import javax.swing.table.DefaultTableModel;
 
 public class CRUD extends javax.swing.JInternalFrame {
 
     private Socket socket;
     private DataInputStream bufferDeEntrada = null;
     private DataOutputStream bufferDeSalida = null;
+    private final DefaultTableModel modelo;
+
     public CRUD() {
         initComponents();
+        setSize(485, 403);
         ejecutarConexion();
+        this.modelo = (DefaultTableModel) jTable1.getModel();
     }
 
     public void levantarConexion() {
         try {
             socket = new Socket("127.0.0.1", 5000);
-            System.out.println("Conectado a :" + socket.getInetAddress().getHostName());
         } catch (Exception e) {
             System.exit(0);
         }
     }
-
 
     public void abrirFlujos() {
         try {
@@ -74,6 +77,15 @@ public class CRUD extends javax.swing.JInternalFrame {
         try {
             do {
                 st = (String) bufferDeEntrada.readUTF();
+                System.out.println(st);
+                String[] parts = st.split("/");
+                if ("tabla".equals(parts[0])) {
+                    int filas = modelo.getRowCount();
+                    for (int i = 1; i <= filas; i++) {
+                        modelo.removeRow(0);
+                    }
+                    modelo.addRow(new Object[]{parts[1], parts[2], parts[3], parts[4]});
+                }
             } while (true);
         } catch (IOException e) {
         }
@@ -93,7 +105,6 @@ public class CRUD extends javax.swing.JInternalFrame {
         Eliminar = new javax.swing.JButton();
         Anadir = new javax.swing.JButton();
         Consulta = new javax.swing.JButton();
-        ConsultarTodos = new javax.swing.JButton();
         telefonotxt = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -105,7 +116,8 @@ public class CRUD extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
-        setMinimumSize(new java.awt.Dimension(485, 403));
+        setMinimumSize(new java.awt.Dimension(491, 406));
+        setName(""); // NOI18N
         setOpaque(false);
 
         Editar.setText("Editar");
@@ -136,28 +148,13 @@ public class CRUD extends javax.swing.JInternalFrame {
             }
         });
 
-        ConsultarTodos.setText("Consultar Todos");
-        ConsultarTodos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ConsultarTodosActionPerformed(evt);
-            }
-        });
-
-        telefonotxt.setText("111");
-
         jLabel4.setText("Telefono:");
 
         jLabel3.setText("Direccion:");
 
-        direcciontxt.setText("Calle 5");
-
-        nombretxt.setText("Alfonso");
-
         jLabel2.setText("Nombre:");
 
         jLabel1.setText("Clave(5):");
-
-        clavetxt.setText("12345");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -174,116 +171,98 @@ public class CRUD extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(direcciontxt, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(18, 18, 18)
-                                .addComponent(telefonotxt, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(clavetxt, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(ConsultarTodos)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Consulta)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Anadir)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Eliminar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Editar))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(nombretxt, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(clavetxt, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(jLabel2)
+                .addGap(17, 17, 17)
+                .addComponent(nombretxt, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(jLabel3)
+                .addGap(8, 8, 8)
+                .addComponent(direcciontxt, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(jLabel4)
+                .addGap(10, 10, 10)
+                .addComponent(telefonotxt, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(80, 80, 80)
+                .addComponent(Anadir)
+                .addGap(84, 84, 84)
+                .addComponent(Consulta)
+                .addGap(6, 6, 6)
+                .addComponent(Eliminar)
+                .addGap(3, 3, 3)
+                .addComponent(Editar))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel1))
                     .addComponent(clavetxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel2))
                     .addComponent(nombretxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel3))
                     .addComponent(direcciontxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel4))
                     .addComponent(telefonotxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ConsultarTodos)
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Anadir)
+                    .addComponent(Consulta)
                     .addComponent(Eliminar)
-                    .addComponent(Editar)
-                    .addComponent(Consulta))
-                .addContainerGap())
+                    .addComponent(Editar)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void EditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarActionPerformed
-//        try {
-//            
-//            dao.actualizarEmpleado(clavetxt.getText(), nombretxt.getText(), direcciontxt.getText(), telefonotxt.getText());
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        escribirDatos("edit" + "/" + clavetxt.getText() + "/" + nombretxt.getText() + "/" + direcciontxt.getText() + "/" + telefonotxt.getText());
     }//GEN-LAST:event_EditarActionPerformed
 
     private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
-//        try {
-//            dao.eliminarCliente(clavetxt.getText());
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        escribirDatos("elim" + "/" + clavetxt.getText());
     }//GEN-LAST:event_EliminarActionPerformed
 
     private void AnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnadirActionPerformed
-        escribirDatos(clavetxt.getText() + " " + nombretxt.getText() + " " + direcciontxt.getText() + " " + telefonotxt.getText());
+        escribirDatos("anadir" + "/" + clavetxt.getText() + "/" + nombretxt.getText() + "/" + direcciontxt.getText() + "/" + telefonotxt.getText());
     }//GEN-LAST:event_AnadirActionPerformed
 
     private void ConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsultaActionPerformed
-//        try {
-//            dao.obtenerEmpleado((DefaultTableModel) jTable1.getModel(), clavetxt.getText());
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        escribirDatos("cons" + "/" + clavetxt.getText());
     }//GEN-LAST:event_ConsultaActionPerformed
-
-    private void ConsultarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsultarTodosActionPerformed
-//        try {
-//            dao.obtenerEmpleados((DefaultTableModel) jTable1.getModel());
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    }//GEN-LAST:event_ConsultarTodosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Anadir;
     private javax.swing.JButton Consulta;
-    private javax.swing.JButton ConsultarTodos;
     private javax.swing.JButton Editar;
     private javax.swing.JButton Eliminar;
     private javax.swing.JTextField clavetxt;

@@ -1,9 +1,5 @@
 package GUI;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.net.Socket;
-
 public class ClienteGUI extends javax.swing.JFrame {
 
     public ClienteGUI() {
@@ -11,6 +7,7 @@ public class ClienteGUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setTitle("Programa Cliente");
+        setSize(493, 500);
     }
 
     @SuppressWarnings("unchecked")
@@ -23,21 +20,19 @@ public class ClienteGUI extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(485, 403));
-        setPreferredSize(new java.awt.Dimension(485, 403));
+        setMinimumSize(new java.awt.Dimension(491, 406));
 
-        jDesktopPane1.setMinimumSize(new java.awt.Dimension(485, 403));
-        jDesktopPane1.setPreferredSize(new java.awt.Dimension(485, 403));
+        jDesktopPane1.setMinimumSize(new java.awt.Dimension(491, 406));
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 485, Short.MAX_VALUE)
+            .addGap(0, 493, Short.MAX_VALUE)
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 403, Short.MAX_VALUE)
+            .addGap(0, 418, Short.MAX_VALUE)
         );
 
         getContentPane().add(jDesktopPane1, java.awt.BorderLayout.CENTER);
